@@ -174,9 +174,17 @@ class ToolCallAgent(ReActAgent):
         try:
             # Parse arguments
             args = json.loads(command.function.arguments or "{}")
+            logger.info(f"🔧 Check args is JSON: type={type(args)} , args={args}")
 
             # Execute the tool
             logger.info(f"🔧 Activating tool: '{name}'...")
+
+            if not type(args)==dict :
+                try :
+                    args = json.loads(args)
+                except Exception as e:
+                    result = "Error: invalid tool arguments!! suppose to be JSONObject but found str,please"
+
             result = await self.available_tools.execute(name=name, tool_input=args)
 
             # Handle special tools
