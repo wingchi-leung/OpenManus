@@ -6,8 +6,10 @@ from app.prompt.browser import NEXT_STEP_PROMPT as BROWSER_NEXT_STEP_PROMPT
 from app.prompt.manus import NEXT_STEP_PROMPT, SYSTEM_PROMPT
 from app.tool import Terminate, ToolCollection
 from app.tool.browser_use_tool import BrowserUseTool
+from app.tool.gitoperator import GitOperator
 from app.tool.python_execute import PythonExecute
-from app.tool.str_replace_editor import StrReplaceEditor
+from app.tool.readfile import ReadFileTool
+from app.tool.file_saver import FileSaver
 
 
 class Manus(BrowserAgent):
@@ -28,12 +30,12 @@ class Manus(BrowserAgent):
     next_step_prompt: str = NEXT_STEP_PROMPT
 
     max_observe: int = 10000
-    max_steps: int = 20
+    max_steps: int = 40
 
     # Add general-purpose tools to the tool collection
     available_tools: ToolCollection = Field(
         default_factory=lambda: ToolCollection(
-            PythonExecute(), BrowserUseTool(), StrReplaceEditor(), Terminate()
+            PythonExecute(), BrowserUseTool(), Terminate(), FileSaver(), Terminate(), GitOperator(),ReadFileTool()
         )
     )
 
