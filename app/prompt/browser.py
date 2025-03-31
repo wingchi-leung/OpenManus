@@ -86,7 +86,10 @@ For browser interactions:
 - To type: browser_use with action="input_text", index=N, text="..."
 - To extract: browser_use with action="extract_content", goal="..."
 - To scroll: browser_use with action="scroll_down" or "scroll_up"
-
 Consider both what's visible and what might be beyond the current viewport.
-Be methodical - remember your progress and what you've learned so far.
+
+<Important> For Task Completion(important):
+- I can choose any other tool to complete the task efficiently, not just the browse use, especially when dealing any thing that can download, there's no need to use browse!
+</Important>
+
 """

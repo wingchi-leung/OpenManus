@@ -3,6 +3,7 @@ from typing import Any, Optional
 
 from pydantic import Field
 
+
 from app.agent.toolcall import ToolCallAgent
 from app.logger import logger
 from app.prompt.browser import NEXT_STEP_PROMPT, SYSTEM_PROMPT
@@ -112,13 +113,16 @@ class BrowserAgent(ToolCallAgent):
                 self.memory.add_message(image_message)
 
         # Replace placeholders with actual browser state info
-        self.next_step_prompt = NEXT_STEP_PROMPT.format(
-            url_placeholder=url_info,
-            tabs_placeholder=tabs_info,
-            content_above_placeholder=content_above_info,
-            content_below_placeholder=content_below_info,
-            results_placeholder=results_info,
-        )
+
+        # if browser is't use,should pass manus prompt
+        if not browser_state is None :
+            self.next_step_prompt = NEXT_STEP_PROMPT.format(
+                url_placeholder=url_info,
+                tabs_placeholder=tabs_info,
+                content_above_placeholder=content_above_info,
+                content_below_placeholder=content_below_info,
+                results_placeholder=results_info,
+            )
 
         # Call parent implementation
         result = await super().think()
