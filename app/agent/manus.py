@@ -7,6 +7,7 @@ from app.prompt.manus import NEXT_STEP_PROMPT, SYSTEM_PROMPT
 from app.tool import Terminate, ToolCollection
 from app.tool.browser_use_tool import BrowserUseTool
 from app.tool.gitoperator import GitOperator
+from app.tool.mermaid_save import MermaidDiagramSaver
 from app.tool.python_execute import PythonExecute
 from app.tool.readfile import ReadFileTool
 from app.tool.file_saver import FileSaver

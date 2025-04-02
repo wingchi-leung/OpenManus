@@ -4,7 +4,7 @@ SYSTEM_PROMPT = (
     "Whether it's programming, information retrieval, file processing, or web browsing, you can handle it all."
     "<important> you should always choose a tool, when tool executed fail,you can try it again or select other tool."
     "<important> If you stop, use `terminate` tool/function call.<important> "
-    "for user experience, You should deliver you final work file in the end of of task,whether it's markdown,txt,chart,or any code. you can decide, but if it's text output,it's best to write a markdown file."
+    "<important> for user experience, You should always try to files in the end of of task,whether it's markdown,txt,chart,or any code. you can decide, if it's text output,it's best to write a markdown file."
     "The initial directory is: {directory}"
 )
 

@@ -50,15 +50,7 @@ class ReadFileTool(BaseTool):
         """
         try:
             # Resolve path similar to how _is_path_safe does for files
-
             absolute_path = os.path.normpath(dir_path)
-
-
-            # Security Check: Ensure the resolved path is within the base_path
-            # if not absolute_path.startswith(self.base_path):
-            #     logger.warning(
-            #         f"Access denied: Directory path '{absolute_path}' is outside the allowed base directory '{self.base_path}'.")
-            #     return None
 
             # Check if it exists
             if not os.path.exists(absolute_path):
@@ -90,7 +82,6 @@ class ReadFileTool(BaseTool):
         """
         validated_dir_path = self._validate_directory_path(dir_path)
         if not validated_dir_path:
-            # Error message generated within _validate_directory_path or from its logic flow
             return [f"Error: Invalid or unsafe directory path provided: '{dir_path}'."]
 
         try:
@@ -120,7 +111,6 @@ class ReadFileTool(BaseTool):
             with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
         except UnicodeDecodeError:
-            # Try a fallback encoding if UTF-8 fails
             try:
                 with open(file_path, 'r', encoding='latin-1') as f:
                     logger.warning(f"Decoded '{file_path}' using latin-1 fallback.")
@@ -137,13 +127,12 @@ class ReadFileTool(BaseTool):
             text = ""
             for page_num in range(len(doc)):
                 page = doc.load_page(page_num)
-                text += page.get_text("text") + "\n"  # Add newline between pages
+                text += page.get_text("text") + "\n"
             doc.close()
             return text
         except Exception as e:
             raise IOError(f"Error reading PDF file '{file_path}': {e}")
 
-        # Inside AdvancedFileReaderTool class...
 
     def _chunk_content(self, content: str) -> List[str]:
         """Splits the content into raw text chunks based on max_chunk_size and overlap."""
@@ -165,9 +154,7 @@ class ReadFileTool(BaseTool):
                 break
 
             start_index = max(start_index + 1, end_index - self.chunk_overlap)
-            # No need for >= content_len check here as the while condition handles it
-
-        return chunks  # Return raw chunks
+        return chunks
 
     def read_and_chunk(self, file_path: str) ->   str:
 
@@ -225,21 +212,15 @@ class ReadFileTool(BaseTool):
             return message
         next_chunk_index = current_chunk_index + 1
         if 0 <= next_chunk_index < len(loaded_chunks):
-            # There is a next chunk
             next_chunk_content = loaded_chunks[next_chunk_index]
 
-            # Update the state for the *next* call
             chunk_state['current_chunk_index'] = next_chunk_index
-            logger.info(f"Returning chunk {next_chunk_index + 1}/{len(loaded_chunks)}.")
-
-            # The chunk content already contains headers/footers from AdvancedFileReaderTool
             return next_chunk_content
         else:
             # No more chunks available
             message = "No more chunks available for the previously loaded file."
             logger.info(message)
-
-            # Clean up state (optional but good practice)
+            # Clean up state
             if 'loaded_chunks' in chunk_state:
                 del chunk_state['loaded_chunks']
             if 'current_chunk_index' in chunk_state:
